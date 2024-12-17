@@ -32,7 +32,7 @@ set SpamPath=""
 echo ===================================
 echo.
 echo             Spam tool
-echo            Made by pando
+echo           Made by pando
 echo.
 echo ===================================
 echo.
@@ -47,5 +47,7 @@ title SPAMMING!! (%CurrentSpamCount% in, %SpamLeft% left)
 if %CurrentSpamCount%==%SpamCount% title FINISHED & pause & goto CommandPrompt
 goto SpamLoop
 
-
-
+:EndSection
+echo Wow you got lost here!
+pause
+goto CommandPrompt
