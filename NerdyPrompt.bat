@@ -3,10 +3,10 @@ NET FILE 1>NUL 2>NUL
 IF ERRORLEVEL 1 set elevated=Not elevated& goto CommandPrompt
 set elevated=Elevated
 cls
-echo Nerdy Prompt - Pando
+echo NerdyPrompt - Pando
 echo.
 :CommandPrompt
-title Command prompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "help" to see all useful commands)
+title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "help" to see all useful commands)
 set /p command="%username%@%computername%~ "
 title %command% - Executing as %username% (%elevated%) in "%~dp0"
 echo %username% on %computername% used "%command%" on %time% and %date% at the directory "%~dp0". >> logs.txt
