@@ -19,6 +19,7 @@ goto CommandPrompt
 :HelpSection1
 echo "parrot" makes a parrot dance on the screen
 echo "spam" is able to spam create files on a specified path
+echo "systeminfo" (built-in windows) to see system infos
 pause
 goto CommandPrompt
 
