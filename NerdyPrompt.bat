@@ -6,11 +6,11 @@ cls
 echo NerdyPrompt - Pando
 echo.
 :CommandPrompt
-title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "help" to see all useful commands)
+title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "cmds" to see all useful commands)
 set /p command="%username%@%computername%~ "
 title %command% - Executing as %username% (%elevated%) in "%~dp0"
 echo %username% on %computername% used "%command%" on %time% and %date% at the directory "%~dp0". >> logs.txt
-if "%command%"=="help" goto HelpSection1
+if "%command%"=="cmds" goto HelpSection1
 if "%command%"=="parrot" curl parrot.live
 if "%command%"=="spam" goto SpamTool1
 %command%
@@ -24,7 +24,6 @@ goto CommandPrompt
 
 
 :SpamTool1
-title Spam tool - Executing as %username% (%elevated%) in "%~dp0"  (Type "help" to see all useful commands)
 set CurrentSpamCount=0
 set SpamCount=0
 set SpamLeft=0
