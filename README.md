@@ -5,6 +5,8 @@
 ###### Features ✨
   - Spam
   - Parrot
+  - Logs
 
 ###### To-do list
-  (empty for now 😔)
+  - Settings
+  - Make the user able to deactivate the logging system in the settings
