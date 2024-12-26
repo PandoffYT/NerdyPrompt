@@ -18,6 +18,7 @@ title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "cmds
 set /p command="%username%@%computername%~ "
 title %command% - Executing as %username% (%elevated%) in "%~dp0"
 echo %username% on %computername% used "%command%" on %time% and %date% at the directory "%~dp0". >> logs.txt
+rem Snippets below are the custom commands, modify it to your needs (Examples will be in the wiki )
 if "%command%"=="cmds" goto HelpSection1
 if "%command%"=="parrot" curl parrot.live
 if "%command%"=="spam" goto SpamTool1
