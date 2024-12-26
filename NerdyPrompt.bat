@@ -1,11 +1,19 @@
 @echo off
+rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
+rem Variable for later customization
+set "Owner=Pando"
+rem This code snippet below is used to know if the prompt is elevated or not. (Right click on the batch then open as admin)
 NET FILE 1>NUL 2>NUL
-IF ERRORLEVEL 1 set elevated=Not elevated& goto CommandPrompt
-set elevated=Elevated
+IF ERRORLEVEL 1 set elevated=Not elevated& goto Initialization
+set elevated=Elevated& goto Initialization
+rem  Initialization snippet below
+:Initialization
 cls
-echo NerdyPrompt - Pando
+echo NerdyPrompt - %Owner%
+echo Windows version:& wmic os get version
 echo.
 :CommandPrompt
+rem Main window of the NerdyPrompt!
 title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "cmds" to see all useful commands)
 set /p command="%username%@%computername%~ "
 title %command% - Executing as %username% (%elevated%) in "%~dp0"
@@ -17,6 +25,7 @@ if "%command%"=="spam" goto SpamTool1
 goto CommandPrompt
 
 :HelpSection1
+rem All commands added by pando, useful or just funny!
 echo "parrot" makes a parrot dance on the screen
 echo "spam" is able to spam create files on a specified path
 echo "systeminfo" (built-in windows) to see system infos
@@ -25,6 +34,7 @@ goto CommandPrompt
 
 
 :SpamTool1
+rem Spam tool, you can customize it to your needs, the in-depth guide will be available soon on the github!
 set CurrentSpamCount=0
 set SpamCount=0
 set SpamLeft=0
@@ -32,13 +42,14 @@ set SpamPath=""
 echo ===================================
 echo.
 echo             Spam tool
-echo           Made by pando
+echo           Made by %Owner%
 echo.
 echo ===================================
 echo.
 set /p SpamCount="Enter how many files you want the tool to create: "
 set /p SpamPath="Enter the (full) path where the files are being created (eg. C:/MyFolder/MySubFolder): "
 set /p SpamExtension="Enter the file extension the file should use: "
+rem YOU SHOULDN'T TOUCH THE CODE BELOW EXCEPT IF YOU REALLY KNOW WHAT YOU'RE DOING! (debugging that makes my brain heat)
 :SpamLoop
 echo %random%> %SpamPath%/%random%.%SpamExtension%
 set /a CurrentSpamCount=%CurrentSpamCount%+1
@@ -48,6 +59,13 @@ if %CurrentSpamCount%==%SpamCount% title FINISHED & pause & goto CommandPrompt
 goto SpamLoop
 
 :EndSection
-echo Wow you got lost here!
+rem End section of the code, do not add anything below except for debbugging purposes.
+echo End of code!
+pause
+goto CommandPrompt
+
+:FailSection
+rem Debugging section below, code can also be redirected here if something isnt right.
+echo Failed!
 pause
 goto CommandPrompt
