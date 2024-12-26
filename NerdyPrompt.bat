@@ -1,4 +1,12 @@
 @echo off
+if exist "%appdata%/NerdyPrompt" (
+    goto Startup
+) else (
+    md %appdata%\NerdyPrompt
+    md %appdata%\NerdyPrompt\Settings
+    goto Startup
+)
+:Startup
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
 rem Variable for later customization
 set "Owner=Pando"
@@ -6,11 +14,10 @@ rem This code snippet below is used to know if the prompt is elevated or not. (R
 NET FILE 1>NUL 2>NUL
 IF ERRORLEVEL 1 set elevated=Not elevated& goto Initialization
 set elevated=Elevated& goto Initialization
-rem  Initialization snippet below
+set SettingsPath=%appdata%/NerdyPromp/Settings
 :Initialization
 cls
 echo NerdyPrompt - %Owner%
-echo Windows version:& wmic os get version
 echo.
 :CommandPrompt
 rem Main window of the NerdyPrompt!
@@ -22,11 +29,13 @@ rem Snippets below are the custom commands, modify it to your needs (Examples wi
 if "%command%"=="cmds" goto HelpSection1
 if "%command%"=="parrot" curl parrot.live
 if "%command%"=="spam" goto SpamTool1
+if "%command%"=="settings" goto Settings
 %command%
 goto CommandPrompt
 
 :HelpSection1
 rem All commands added by pando, useful or just funny!
+echo "settings" to mess with NerdyPrompt settings
 echo "parrot" makes a parrot dance on the screen
 echo "spam" is able to spam create files on a specified path
 echo "systeminfo" (built-in windows) to see system infos
@@ -70,3 +79,31 @@ rem Debugging section below, code can also be redirected here if something isnt 
 echo Failed!
 pause
 goto CommandPrompt
+
+:Settings
+rem I placed settigns here because it's a feature that's being currently worked on, it will later be placed somewhere else
+cls
+rem Here are the settings you can customize to your needs
+echo [1] Show windows version string on NerdyPrompt startup (Below the "NerdyPrompt - %Owner%" line)
+choice /n /c 1
+set SelectedSetting=%errorlevel%
+
+:ChangeSelectedSetting
+if %SelectedSetting%==1 goto ShowWindowsVersionStringOnStartup-Settings
+
+:ShowWindowsVersionStringOnStartup-Settings
+echo.
+echo Show windows version string on NerdyPrompt startup (Current Value=%ShowWindowsVersionStringOnStartup%)
+echo.
+echo [1] Enable
+echo [2] Disable
+choice /n /c 12 /m "Select an option: "
+
+if %errorlevel%=1 set ShowWindowsVersionStringOnStartup=Enabled
+if %errorlevel%=2 set ShowWindowsVersionStringOnStartup=Disabled
+
+echo %ShowWindowsVersionStringOnStartup%> %SettingsPath%/ShowWindowsVersionStringOnStartup.txt
+set /p ShowWindowsVersionStringOnStartup=<%SettingsPath%/ShowWindowsVersionStringOnStartup.txt
+goto CommandPrompt
+
+
