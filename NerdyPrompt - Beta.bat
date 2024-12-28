@@ -1,4 +1,5 @@
 @echo off
+rem !- BETA VERSION -! EXPECT THINGS TO BREAK
 if exist "%appdata%/NerdyPrompt" (
     goto Startup
 ) else (
