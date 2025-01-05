@@ -11,3 +11,4 @@
   - Settings
   - Make the user able to deactivate the logging system in the settings
   - Wiki on how to customize it
+  - Crash command ("powershell wininit", will require elevation)
