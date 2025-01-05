@@ -1,4 +1,12 @@
 @echo off
+rem !- BETA VERSION -! EXPECT THINGS TO BREAK
+if exist "%appdata%/NerdyPrompt" (
+    goto Startup
+) else (
+    md %appdata%\NerdyPrompt
+    md %appdata%\NerdyPrompt\Settings
+    goto Startup
+)
 :Startup
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
 rem Variable for later customization
@@ -71,6 +79,32 @@ goto CommandPrompt
 rem Debugging section below, code can also be redirected here if something isnt right.
 echo Failed!
 pause
+goto CommandPrompt
+
+:Settings
+rem I placed settigns here because it's a feature that's being currently worked on, it will later be placed somewhere else
+cls
+rem Here are the settings you can customize to your needs
+echo [1] Show windows version string on NerdyPrompt startup (Below the "NerdyPrompt - %Owner%" line)
+choice /n /c 1
+set SelectedSetting=%errorlevel%
+
+:ChangeSelectedSetting
+if %SelectedSetting%==1 goto ShowWindowsVersionStringOnStartup-Settings
+
+:ShowWindowsVersionStringOnStartup-Settings
+echo.
+echo Show windows version string on NerdyPrompt startup (Current Value=%ShowWindowsVersionStringOnStartup%)
+echo.
+echo [1] Enable
+echo [2] Disable
+choice /n /c 12 /m "Select an option: "
+
+if %errorlevel%=1 set ShowWindowsVersionStringOnStartup=Enabled
+if %errorlevel%=2 set ShowWindowsVersionStringOnStartup=Disabled
+
+echo %ShowWindowsVersionStringOnStartup%> %SettingsPath%/ShowWindowsVersionStringOnStartup.txt
+set /p ShowWindowsVersionStringOnStartup=<%SettingsPath%/ShowWindowsVersionStringOnStartup.txt
 goto CommandPrompt
 
 
