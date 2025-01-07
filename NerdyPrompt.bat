@@ -22,13 +22,13 @@ rem Snippets below are the custom commands, modify it to your needs (Examples wi
 if "%command%"=="cmds" goto HelpSection1
 if "%command%"=="parrot" curl parrot.live
 if "%command%"=="spam" goto SpamTool1
-if "%command%"=="settings" goto Settings
+if "%command%"=="close" goto Close
+if "%command%"=="restart" goto Restart
 %command%
 goto CommandPrompt
 
 :HelpSection1
 rem All commands added by pando, useful or just funny!
-echo "settings" to mess with NerdyPrompt settings
 echo "parrot" makes a parrot dance on the screen
 echo "spam" is able to spam create files on a specified path
 echo "systeminfo" (built-in windows) to see system infos
@@ -72,5 +72,11 @@ rem Debugging section below, code can also be redirected here if something isnt 
 echo Failed!
 pause
 goto CommandPrompt
+
+:Close
+exit
+
+:Restart
+goto Startup
 
 
