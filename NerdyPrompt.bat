@@ -13,6 +13,7 @@ cls
 echo NerdyPrompt - %Owner%
 echo.
 :CommandPrompt
+set command=
 rem Main window of the NerdyPrompt!
 title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "cmds" to see all useful commands)
 set /p command="%username%@%computername%~ "
