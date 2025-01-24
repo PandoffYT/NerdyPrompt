@@ -1,13 +1,12 @@
 @echo off
 :Startup
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
-rem Variable for later customization
+rem Variables for later customization
 set "Owner=Pando"
 rem This code snippet below is used to know if the prompt is elevated or not. (Right click on the batch then open as admin)
 NET FILE 1>NUL 2>NUL
 IF ERRORLEVEL 1 set elevated=Not elevated& goto Initialization
 set elevated=Elevated& goto Initialization
-set SettingsPath=%appdata%/NerdyPromp/Settings
 :Initialization
 cls
 echo NerdyPrompt - %Owner%
@@ -18,11 +17,12 @@ rem Main window of the NerdyPrompt!
 title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "cmds" to see all useful commands)
 set /p command="%username%@%computername%~ "
 title %command% - Executing as %username% (%elevated%) in "%~dp0"
-echo %username% on %computername% used "%command%" on %time% and %date% at the directory "%~dp0". >> logs.txt
+echo %username% on %computername% used "%command%" on %time% and %date% at the directory "%~dp0". >> %TEMP%/NERDYPROMPT-%username%LOG.log
 rem Snippets below are the custom commands, modify it to your needs (Examples will be in the wiki )
 if "%command%"=="cmds" goto HelpSection1
 if "%command%"=="parrot" curl parrot.live
 if "%command%"=="spam" goto SpamTool1
+if "%command%"=="who" goto WhoAmI
 if "%command%"=="close" goto Close
 if "%command%"=="restart" goto Restart
 %command%
@@ -33,7 +33,7 @@ rem All commands added by pando, useful or just funny!
 echo "parrot" makes a parrot dance on the screen
 echo "spam" is able to spam create files on a specified path
 echo "systeminfo" (built-in windows) to see system infos
-pause
+echo "who" to see the directory and which user you are running cmd with
 goto CommandPrompt
 
 
@@ -59,8 +59,14 @@ echo %random%> %SpamPath%/%random%.%SpamExtension%
 set /a CurrentSpamCount=%CurrentSpamCount%+1
 set /a SpamLeft=%SpamCount%-%CurrentSpamCount%
 title SPAMMING!! (%CurrentSpamCount% in, %SpamLeft% left)
-if %CurrentSpamCount%==%SpamCount% title FINISHED & pause & goto CommandPrompt
+if %CurrentSpamCount%==%SpamCount% echo FINISHED SPAMMING!!1 & goto CommandPrompt
 goto SpamLoop
+
+:WhoAmI
+rem This command is used to see the directory and the user you are running the cmd with.
+echo Username : %username%
+echo Directory : %~dp0
+goto CommandPrompt
 
 :EndSection
 rem End section of the code, do not add anything below except for debbugging purposes.
