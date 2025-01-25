@@ -25,6 +25,7 @@ if "%command%"=="spam" goto SpamTool1
 if "%command%"=="who" goto WhoAmI
 if "%command%"=="close" goto Close
 if "%command%"=="restart" goto Restart
+if "%command%"=="crashpc" goto CrashComputer
 %command%
 goto CommandPrompt
 
@@ -34,6 +35,7 @@ echo "parrot" makes a parrot dance on the screen
 echo "spam" is able to spam create files on a specified path
 echo "systeminfo" (built-in windows) to see system infos
 echo "who" to see the directory and which user you are running cmd with
+echo "crashpc" to crash the computer the cmd is executed on (REQUIRES ELEVATION, PLEASE SAVE ANY WORK, I WILL NOT BE RESPONSIBLE FOR ANY LOSS WORK)
 goto CommandPrompt
 
 
@@ -67,6 +69,16 @@ rem This command is used to see the directory and the user you are running the c
 echo Username : %username%
 echo Directory : %~dp0
 goto CommandPrompt
+
+:CrashComputer
+NET FILE 1>NUL 2>NUL
+IF ERRORLEVEL 1 echo This requires administrator permissions, restart this windows as adminisitrator then try again! & pause & goto CommandPrompt
+echo.
+echo !!WARNING!!
+echo THIS COMMAND BLUESCREENS THE COMPUTER IT'S EXECUTED ON, SAVE ANY WORK OPENED THEN PRESS "1" TO CONTINUE, PRESS "2" TO CANCEL
+choice /n /c:12
+if errorlevel 1 powershell wininit
+if errorlevel 2 echo CRASH CANCELED! & pause & goto CommandPrompt
 
 :EndSection
 rem End section of the code, do not add anything below except for debbugging purposes.
