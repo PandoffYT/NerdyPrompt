@@ -26,7 +26,8 @@ if "%command%"=="who" goto WhoAmI
 if "%command%"=="close" goto Close
 if "%command%"=="restart" goto Restart
 if "%command%"=="crashpc" goto CrashComputer
-%command%
+if "%command%"=="nbrspeedtest" goto nbrspeedtest
+if "%command%"=="rndmnbrspeedtest" goto rndmnbrspeedtest
 goto CommandPrompt
 
 :HelpSection1
@@ -36,6 +37,8 @@ echo "spam" is able to spam create files on a specified path
 echo "systeminfo" (built-in windows) to see system infos
 echo "who" to see the directory and which user you are running cmd with
 echo "crashpc" to crash the computer the cmd is executed on (REQUIRES ELEVATION, PLEASE SAVE ANY WORK, I WILL NOT BE RESPONSIBLE FOR ANY LOSS WORK)
+echo "nbrspeedtest" to speedtest your pc's cpu with a choosen number (the script adds 1 until it reaches the said number)
+echo "rndmnbrspeedtest" to see how long it takes for two random numbers to match up
 goto CommandPrompt
 
 
@@ -79,6 +82,77 @@ echo THIS COMMAND BLUESCREENS THE COMPUTER IT'S EXECUTED ON, SAVE ANY WORK OPENE
 choice /n /c:12
 if errorlevel 1 powershell wininit
 if errorlevel 2 echo CRASH CANCELED! & pause & goto CommandPrompt
+
+:nbrspeedtest
+set "endtime=TIME"
+set nbr=NBR
+set current=0
+set attempts=0
+set "Status=NOT DONE"
+title NumberSPDTST
+cls
+set /p nbr="Enter the number you want the pc to get to (enter rollthedice to get a random number): "
+if "%nbr%"=="rollthedice" set nbr=%random%
+set "starttime=%time%"
+:rndmluck1
+title NumberSpeedtest - Start time: %starttime% - Number: %nbr% - Current number: %current% - Attempts: %attempts% - Status: %Status%
+set /a current=%current%+1
+set /a attempts=%attempts%+1
+if %current%==%nbr% set "endtime=%time%" & set "Status=Done" & goto foundnbr
+goto rndmluck1
+:foundnbr
+title NumberSpeedtest - Start time: %starttime% - Number: %nbr% - Current number: %current% - Attempts: %attempts% - Status: %Status%
+cls
+echo.
+echo ==========================================
+echo.
+echo        Start time: %starttime%
+echo        Number: %nbr%
+echo        Attempts: %attempts%
+echo        End time: %endtime%
+echo.
+echo %Status%
+echo ==========================================
+echo.
+pause
+goto CommandPrompt
+
+:rndmnbrspeedtest
+set "endtime=TIME"
+set rndm=%random%
+set current=0
+set attempts=0
+set "Phrase=The number has not been found"
+set "Status=NOT FOUND"
+title Randomizer Luck
+cls
+set "starttime=%time%"
+:rndmluck7
+title Random Luck - Start time: %starttime% - Random number: %rndm% - Current number: %current% - Attempts: %attempts% - Status: %Status%
+set current=%random%
+set /a attempts=%attempts%+1
+if %current%==%rndm% set "Phrase=The number has been found" & set "endtime=%time%" & set "Status=FOUND" & goto found22
+goto rndmluck7
+:found22
+title Random Luck - Start time: %starttime% - Random number: %rndm% - Current number: %current% - Attempts: %attempts% - Status: %Status%
+cls
+echo.
+echo ==========================================
+echo.
+echo        Start time: %starttime%
+echo        Random number: %rndm%
+echo        Current number: %current%
+echo        Attempts: %attempts%
+echo        End time: %endtime%
+echo.
+echo %Phrase% (%Status%)
+echo ==========================================
+echo.
+pause
+goto CommandPrompt
+
+
+
 
 :EndSection
 rem End section of the code, do not add anything below except for debbugging purposes.
