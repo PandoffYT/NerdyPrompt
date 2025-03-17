@@ -75,7 +75,7 @@ goto CommandPrompt
 
 :CrashComputer
 NET FILE 1>NUL 2>NUL
-IF ERRORLEVEL 1 echo This requires administrator permissions, restart this windows as adminisitrator then try again! & pause & goto CommandPrompt
+IF ERRORLEVEL 1 echo This requires administrator permissions, restart this window as adminisitrator then try again! & pause & goto CommandPrompt
 echo.
 echo !!WARNING!!
 echo THIS COMMAND BLUESCREENS THE COMPUTER IT'S EXECUTED ON, SAVE ANY WORK OPENED THEN PRESS "1" TO CONTINUE, PRESS "2" TO CANCEL
