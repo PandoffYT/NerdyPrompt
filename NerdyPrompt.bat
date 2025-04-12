@@ -82,6 +82,7 @@ echo THIS COMMAND BLUESCREENS THE COMPUTER IT'S EXECUTED ON, SAVE ANY WORK OPENE
 choice /n /c:12
 if errorlevel 1 powershell wininit
 if errorlevel 2 echo CRASH CANCELED! & pause & goto CommandPrompt
+goto CommandPrompt
 
 :nbrspeedtest
 set "endtime=TIME"
