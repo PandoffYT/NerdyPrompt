@@ -3,6 +3,8 @@
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
 rem Variables for later customization
 set "Owner=Pando"
+for /f "tokens=2 delims=[]" %%i in ('ver') do set WindowsVersion=%%i
+echo Detected Windows Version: %WindowsVersion%
 rem This code snippet below is used to know if the prompt is elevated or not. (Right click on the batch then open as admin)
 NET FILE 1>NUL 2>NUL
 IF ERRORLEVEL 1 set elevated=Not elevated& goto Initialization
@@ -14,9 +16,9 @@ echo.
 :CommandPrompt
 set command=
 rem Main window of the NerdyPrompt!
-title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0"  (Type "cmds" to see all useful commands)
+title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0" (Type "cmds" to see all useful commands) (DBG: %WindowsVersion%)
 set /p command="%username%@%computername%~ "
-title %command% - Executing as %username% (%elevated%) in "%~dp0"
+title %command% - Executing as %username% (%elevated%) in "%~dp0" (DBG: %WindowsVersion%)
 echo %username% on %computername% used "%command%" on %time% and %date% at the directory "%~dp0". >> %TEMP%/NERDYPROMPT-%username%LOG.log
 rem Snippets below are the custom commands, modify it to your needs (Examples will be in the wiki )
 if "%command%"=="cmds" goto HelpSection1
@@ -28,6 +30,7 @@ if "%command%"=="restart" goto Restart
 if "%command%"=="crashpc" goto CrashComputer
 if "%command%"=="nbrspeedtest" goto nbrspeedtest
 if "%command%"=="rndmnbrspeedtest" goto rndmnbrspeedtest
+if "%command%"=="systeminfo" systeminfo
 goto CommandPrompt
 
 :HelpSection1
@@ -75,13 +78,22 @@ goto CommandPrompt
 
 :CrashComputer
 NET FILE 1>NUL 2>NUL
-IF ERRORLEVEL 1 echo This requires administrator permissions, restart this window as adminisitrator then try again! & pause & goto CommandPrompt
+IF ERRORLEVEL 1 (
+    echo This requires administrator permissions, restart this window as administrator then try again!
+    pause
+    goto CommandPrompt
+)
 echo.
 echo !!WARNING!!
-echo THIS COMMAND BLUESCREENS THE COMPUTER IT'S EXECUTED ON, SAVE ANY WORK OPENED THEN PRESS "1" TO CONTINUE, PRESS "2" TO CANCEL
+echo THIS COMMAND BLUESCREENS THE COMPUTER IT'S EXECUTED ON, SAVE ANY WORK OPENED. (NOT SUPPORTED ON WINDOWS 11 ABOVE 23H2)
+echo PRESS "1" TO CONTINUE, PRESS "2" TO CANCEL
 choice /n /c:12
-if errorlevel 1 powershell wininit
-if errorlevel 2 echo CRASH CANCELED! & pause & goto CommandPrompt
+if %errorlevel%==2 (
+    echo CRASH CANCELED!
+    pause
+    goto CommandPrompt
+)
+if %errorlevel%==1 powershell wininit
 goto CommandPrompt
 
 :nbrspeedtest
