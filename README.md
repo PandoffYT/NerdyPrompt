@@ -6,10 +6,11 @@
   - Spam
   - Parrot
   - Logs (Use the command "incognito" to not log the command)
+  - bypassadmin, which bypasses the UAC
   - Many more you can discover!
 
 ###### To-do list
   - Settings
   - Make the user able to deactivate the logging system in the settings
   - Wiki on how to customize it
-  ~~- Crash command ("powershell wininit", will require elevation)~~
+  - ~~Crash command ("powershell wininit", will require elevation)~~
