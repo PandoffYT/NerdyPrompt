@@ -1,5 +1,6 @@
 @echo off
 :Startup
+rem THE CODE IS KINDA AHH, SO THE WIKI IS GETTING SOO DELAYED
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
 rem Variables for later customization
 set doLOGSYSTEMINFO=0
