@@ -302,7 +302,7 @@ goto CommandPrompt
 
 :INCOGNITO
 set /p command="%username%@%computername% (INCOGNITO)~ "
-color 0 & cls & goto RunCommand
+goto RunCommand
 
 :Clear
 cls
