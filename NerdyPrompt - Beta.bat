@@ -1,3 +1,10 @@
+rem This Beta is kinda deprecated, i will not be updating it anymore, the new version is available on the github page of NerdyPrompt.
+
+
+
+
+
+
 @echo off
 rem !- BETA VERSION -! EXPECT THINGS TO BREAK
 if exist "%appdata%/NerdyPrompt" (
