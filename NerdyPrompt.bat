@@ -2,6 +2,10 @@
 :Startup
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
 rem Variables for later customization
+set doLOGSYSTEMINFO=0
+set doDELETESYSTEMINFOLOG=0
+set doBYPASSADMINRIGHTSCRASHPC=0
+set doBYPASSADMINRIGHTSCRASHPCTEXT=
 set "Owner=Pando"
 for /f "tokens=2 delims=[]" %%i in ('ver') do set WindowsVersion=%%i
 echo Detected Windows Version: %WindowsVersion%
@@ -16,32 +20,51 @@ echo.
 :CommandPrompt
 set command=
 rem Main window of the NerdyPrompt!
-title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0" (Type "cmds" to see all useful commands) (DBG: %WindowsVersion%)
+title NerdyPrompt - Executing as %username% (%elevated%) in "%~dp0" (Type "help" to see all commands) (DBG: %OS% %WindowsVersion%)
 set /p command="%username%@%computername%~ "
-title %command% - Executing as %username% (%elevated%) in "%~dp0" (DBG: %WindowsVersion%)
-echo %username% on %computername% used "%command%" on %time% and %date% at the directory "%~dp0". >> %TEMP%/NERDYPROMPT-%username%LOG.log
+if "%command%"=="incognito" goto INCOGNITO
+title %command% - Executing as %username% (%elevated%) in "%~dp0" (DBG: %OS% %WindowsVersion%)
+echo %username% on %computername% used "%command%" on %time% / %date% in "%~dp0". >> %TEMP%/NERDYPROMPT-%username%LOG.log
 rem Snippets below are the custom commands, modify it to your needs (Examples will be in the wiki )
-if "%command%"=="cmds" goto HelpSection1
+:RunCommand
+if "%command%"=="help" goto HelpSection1
+    if "%command%"=="cmds" goto HelpSection1
 if "%command%"=="parrot" curl parrot.live
 if "%command%"=="spam" goto SpamTool1
 if "%command%"=="who" goto WhoAmI
-if "%command%"=="close" goto Close
-if "%command%"=="restart" goto Restart
+if "%command%"=="what" goto SystemInformer
+    if "%command%"=="what -l" set "doLOGSYSTEMINFO=1"& goto SystemInformer
+    if "%command%"=="what -dl" set "doDELETESYSTEMINFOLOG=1"& goto SystemInformer
 if "%command%"=="crashpc" goto CrashComputer
+    if "%command%"=="crashpc -bypass" set "doBYPASSADMINRIGHTSCRASHPC=1"& goto CrashComputer
+if "%command%"=="bypassadmin" goto BypassAdminRequest
 if "%command%"=="nbrspeedtest" goto nbrspeedtest
 if "%command%"=="rndmnbrspeedtest" goto rndmnbrspeedtest
 if "%command%"=="systeminfo" systeminfo
+rem Below are system/required commands
+if "%command%"=="clear" goto Clear
+if "%command%"=="close" goto Close
+if "%command%"=="exit" goto Close
+if "%command%"=="restart" goto Restart
+if "%command%"=="logs" start "" "%TEMP%/NERDYPROMPT-%username%LOG.log"
+    if "%command%"=="logs -delete" del "%TEMP%\NERDYPROMPT-%username%LOG.log" & echo Logs deleted!
+    if "%command%"=="logs -deletecopy" del "logs.txt"
+    if "%command%"=="logs -copy" copy "%TEMP%\NERDYPROMPT-%username%LOG.log" "%~dp0/logs.txt" & echo Logs copied to the current directory
 goto CommandPrompt
 
 :HelpSection1
 rem All commands added by pando, useful or just funny!
 echo "parrot" makes a parrot dance on the screen
 echo "spam" is able to spam create files on a specified path
-echo "systeminfo" (built-in windows) to see system infos
+echo "systeminfo" (built-in windows) to see system infos (Kinda deprecated, use "what" instead)
 echo "who" to see the directory and which user you are running cmd with
-echo "crashpc" to crash the computer the cmd is executed on (REQUIRES ELEVATION, PLEASE SAVE ANY WORK, I WILL NOT BE RESPONSIBLE FOR ANY LOSS WORK)
+echo "what" to see system information ("what -l" to log system infos and "what -dl" to delete the log file)
+echo "clear" to clear the screen
+echo "crashpc" to crash the computer (Requires admin permissions, not supported on Windows 11 above 23H2)
+echo "bypassadmin" to bypass the admin request (not supported on all Windows Versions, some got patched sorry)
 echo "nbrspeedtest" to speedtest your pc's cpu with a choosen number (the script adds 1 until it reaches the said number)
 echo "rndmnbrspeedtest" to see how long it takes for two random numbers to match up
+
 goto CommandPrompt
 
 
@@ -74,9 +97,87 @@ goto SpamLoop
 rem This command is used to see the directory and the user you are running the cmd with.
 echo Username : %username%
 echo Directory : %~dp0
+echo Elevated? : %elevated%
+echo User Profile : %USERPROFILE%
+echo Computer Name : %COMPUTERNAME%
+echo.
+echo Want better system information? Use the "what" command!
+goto CommandPrompt
+
+:SystemInformer
+if "%doLOGSYSTEMINFO%"=="1" (
+    echo OS: %OS% > systeminformations.txt
+    echo Windows Version: %WindowsVersion% >> systeminformations.txt
+    echo Username: %username% >> systeminformations.txt
+    echo Computer Name: %COMPUTERNAME% >> systeminformations.txt
+    echo User Profile: %USERPROFILE% >> systeminformations.txt
+    echo Elevated: %elevated% >> systeminformations.txt
+    echo Current Directory: %CD% >> systeminformations.txt
+    echo Current Time: %time% >> systeminformations.txt
+    echo Current Date: %date% >> systeminformations.txt
+    echo Current Path: %~dp0 >> systeminformations.txt
+    echo TEMP Directory: %TEMP% >> systeminformations.txt
+    echo System Root: %SystemRoot% >> systeminformations.txt
+    echo Processor Name: %PROCESSOR_IDENTIFIER% >> systeminformations.txt
+    echo Processor Architecture: %PROCESSOR_ARCHITECTURE% >> systeminformations.txt
+    echo Processor Count: %NUMBER_OF_PROCESSORS% >> systeminformations.txt
+    echo Processor Level: %PROCESSOR_LEVEL% >> systeminformations.txt
+    echo Processor Revision: %PROCESSOR_REVISION% >> systeminformations.txt
+    echo Processor Type: %PROCESSOR_TYPE% >> systeminformations.txt
+    echo Logged system information to systeminformations.txt!
+    set doLOGSYSTEMINFO=0
+    goto CommandPrompt
+) else (
+    set doLog=0
+)
+if "%doDELETESYSTEMINFOLOG%"=="1" (
+    if exist systeminformations.txt (
+        del systeminformations.txt
+        set doDELETESYSTEMINFOLOG=0
+        echo Log deleted!
+    ) else (
+        echo No log file found to delete.
+    )
+    goto CommandPrompt
+) else (
+    set doLog=0
+)
+
+echo ===========================================
+echo            System Information
+echo OS: %OS%
+echo Windows Version: %WindowsVersion%
+echo Username: %username%
+echo Computer Name: %COMPUTERNAME%
+echo User Profile: %USERPROFILE%
+echo Elevated: %elevated%
+echo Current Directory: %CD%
+echo Current Time: %time%
+echo Current Date: %date%
+echo Current Path: %~dp0
+echo TEMP Directory: %TEMP%
+echo System Root: %SystemRoot%
+echo Processor Name: %PROCESSOR_IDENTIFIER%
+echo Processor Architecture: %PROCESSOR_ARCHITECTURE%
+echo Processor Count: %NUMBER_OF_PROCESSORS%
+echo Processor Level: %PROCESSOR_LEVEL%
+echo Processor Revision: %PROCESSOR_REVISION%
+echo Processor Type: %PROCESSOR_TYPE%
+echo System Directory: %SystemRoot%\System32
+echo System Drive: %SystemDrive%
+echo System Page File: %SystemRoot%\pagefile.sys
+echo ===========================================
 goto CommandPrompt
 
 :CrashComputer
+if "%doBYPASSADMINRIGHTSCRASHPC%"=="1" (
+    echo Bypassing admin request for crash command...
+    set doBYPASSADMINRIGHTSCRASHPC=0
+    set doBYPASSADMINRIGHTSCRASHPCTEXT= Bypass method was used, some windows versions may not support this
+    goto CrashComputer__BYPASS
+) else (
+    set doBYPASSADMINRIGHTSCRASHPC=0
+)
 NET FILE 1>NUL 2>NUL
 IF ERRORLEVEL 1 (
     echo This requires administrator permissions, restart this window as administrator then try again!
@@ -84,8 +185,9 @@ IF ERRORLEVEL 1 (
     goto CommandPrompt
 )
 echo.
+:CrashComputer__BYPASS
 echo !!WARNING!!
-echo THIS COMMAND BLUESCREENS THE COMPUTER IT'S EXECUTED ON, SAVE ANY WORK OPENED. (NOT SUPPORTED ON WINDOWS 11 ABOVE 23H2)
+echo THIS COMMAND BLUESCREENS THE COMPUTER, SAVE ANY WORK OPENED. (NOT SUPPORTED ON WINDOWS 11 ABOVE 23H2)
 echo PRESS "1" TO CONTINUE, PRESS "2" TO CANCEL
 choice /n /c:12
 if %errorlevel%==2 (
@@ -94,7 +196,29 @@ if %errorlevel%==2 (
     goto CommandPrompt
 )
 if %errorlevel%==1 powershell wininit
+cls
+echo Crash failed! (Maybe you're using Windows 11 above 23H2?%doBYPASSADMINRIGHTSCRASHPCTEXT%)
+pause
+goto Initialization
+
+:BypassAdminRequest
+rem This section is used to bypass the admin request, it will not work on all computers, only on some.
+set /p EXECUTABLE__PATH="Enter the full path of the executable you want to run (eg. C:/MyFolder/MyExecutable.exe) (Type 'exit' to exit): "
+if "%EXECUTABLE__PATH%"=="exit" (
+    goto CommandPrompt
+)
+if not exist "%EXECUTABLE__PATH%" (
+    echo The file does not exist, please check the path and try again.
+    pause
+    goto BypassAdminRequest
+)
+
+cls
+echo Running "%EXECUTABLE__PATH%" with admin privileges...
+SET __COMPAT_LAYER=RunAsInvoker
+start "" "%EXECUTABLE__PATH%"
 goto CommandPrompt
+
 
 :nbrspeedtest
 set "endtime=TIME"
@@ -164,9 +288,6 @@ echo.
 pause
 goto CommandPrompt
 
-
-
-
 :EndSection
 rem End section of the code, do not add anything below except for debbugging purposes.
 echo End of code!
@@ -177,6 +298,14 @@ goto CommandPrompt
 rem Debugging section below, code can also be redirected here if something isnt right.
 echo Failed!
 pause
+goto CommandPrompt
+
+:INCOGNITO
+set /p command="%username%@%computername% (INCOGNITO)~ "
+color 0 & cls & goto RunCommand
+
+:Clear
+cls
 goto CommandPrompt
 
 :Close
