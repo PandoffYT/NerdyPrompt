@@ -51,6 +51,7 @@ if "%command%"=="logs" start "" "%TEMP%/NERDYPROMPT-%username%LOG.log"
     if "%command%"=="logs -delete" del "%TEMP%\NERDYPROMPT-%username%LOG.log" & echo Logs deleted!
     if "%command%"=="logs -deletecopy" del "logs.txt"
     if "%command%"=="logs -copy" copy "%TEMP%\NERDYPROMPT-%username%LOG.log" "%~dp0/logs.txt" & echo Logs copied to the current directory
+%command%
 goto CommandPrompt
 
 :HelpSection1
@@ -161,6 +162,9 @@ echo System Root: %SystemRoot%
 echo Processor Name: %PROCESSOR_IDENTIFIER%
 echo Processor Architecture: %PROCESSOR_ARCHITECTURE%
 echo Processor Count: %NUMBER_OF_PROCESSORS%
+set /a CPUCORES=%NUMBER_OF_PROCESSORS%/2
+echo Cores Count: %CPUCORES%
+echo Threads Count: %NUMBER_OF_PROCESSORS%
 echo Processor Level: %PROCESSOR_LEVEL%
 echo Processor Revision: %PROCESSOR_REVISION%
 echo Processor Type: %PROCESSOR_TYPE%
