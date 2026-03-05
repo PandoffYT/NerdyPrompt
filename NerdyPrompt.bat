@@ -1,4 +1,5 @@
 @echo off
+
 :Startup
 rem THE CODE IS KINDA AHH, SO THE WIKI IS GETTING SOO DELAYED
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
@@ -10,10 +11,12 @@ set doBYPASSADMINRIGHTSCRASHPCTEXT=
 set "Owner=Pando"
 for /f "tokens=2 delims=[]" %%i in ('ver') do set WindowsVersion=%%i
 echo Detected Windows Version: %WindowsVersion%
+
 rem This code snippet below is used to know if the prompt is elevated or not. (Right click on the batch then open as admin)
 NET FILE 1>NUL 2>NUL
 IF ERRORLEVEL 1 set elevated=Not elevated& goto Initialization
 set elevated=Elevated& goto Initialization
+
 :Initialization
 cls
 echo NerdyPrompt - %Owner%
@@ -27,6 +30,7 @@ if "%command%"=="incognito" goto INCOGNITO
 title %command% - Executing as %username% (%elevated%) in "%~dp0" (DBG: %OS% %WindowsVersion%)
 echo %username% on %computername% used "%command%" on %time% / %date% in "%~dp0". >> %TEMP%/NERDYPROMPT-%username%LOG.log
 rem Snippets below are the custom commands, modify it to your needs (Examples will be in the wiki )
+
 :RunCommand
 if "%command%"=="help" goto HelpSection1
     if "%command%"=="cmds" goto HelpSection1
@@ -42,6 +46,7 @@ if "%command%"=="bypassadmin" goto BypassAdminRequest
 if "%command%"=="nbrspeedtest" goto nbrspeedtest
 if "%command%"=="rndmnbrspeedtest" goto rndmnbrspeedtest
 if "%command%"=="systeminfo" systeminfo
+
 rem Below are system/required commands
 if "%command%"=="clear" goto Clear
 if "%command%"=="close" goto Close
@@ -269,6 +274,7 @@ set "Status=NOT FOUND"
 title Randomizer Luck
 cls
 set "starttime=%time%"
+
 :rndmluck7
 title Random Luck - Start time: %starttime% - Random number: %rndm% - Current number: %current% - Attempts: %attempts% - Status: %Status%
 set current=%random%
