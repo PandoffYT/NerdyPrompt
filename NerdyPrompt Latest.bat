@@ -1,5 +1,10 @@
 @echo off
 
+rem This junk hasn't been mainted for a while, and it's possible that some of the features stopped working while i was away, feel free to contact me for features you'd like or to warn me about bugs or malfunctions
+rem Also those batch comments are cringe and the code is looking straight up like ass so i'll try to clean it up a bit
+rem Thanks for spending your precious time reading this brainfuck, i really appreciate it
+
+
 :Startup
 rem THE CODE IS KINDA AHH, SO THE WIKI IS GETTING SOO DELAYED
 rem Welcome to NerdyPrompt code, i advise you to check the wiki that's going to be built sometimes soon if you dont know batch, it will be about customizing NerdyPrompt to your needs!
@@ -108,7 +113,7 @@ echo Elevated? : %elevated%
 echo User Profile : %USERPROFILE%
 echo Computer Name : %COMPUTERNAME%
 echo.
-echo Want better system information? Use the "what" command!
+echo Want better system information? Use the "what" command! (or the systeminfo because the what isn't really useful nowdays)
 goto CommandPrompt
 
 :SystemInformer
@@ -212,7 +217,7 @@ pause
 goto Initialization
 
 :BypassAdminRequest
-rem This section is used to bypass the admin request, it will not work on all computers, only on some.
+rem This section is used to bypass the admin request, it will not work on all windows versions, only ones before Windows 11 23H2
 set /p EXECUTABLE__PATH="Enter the full path of the executable you want to run (eg. C:/MyFolder/MyExecutable.exe) (Type 'exit' to exit): "
 if "%EXECUTABLE__PATH%"=="exit" (
     goto CommandPrompt
