@@ -2,6 +2,9 @@
 ### Lightweight & fully customizable !
 #### NerdyPrompt is a batch based program that can run on any windows pc starting from windows xp (can even run on linux with wine!), that bypasses almost all school computers restrictions and comes with useful & funny commands/tools
 #### ⚠ I advise you to download NerdyPrompt.bat if you don't know what you're doing, NerdyPrompt - Beta.bat as it says contains currently being worked-on code, and might break the usability of the program.
+
+#### The beta version is now truly deprecated, don't expect much work on it (you can head over to my recent git push to learn more).
+
 ###### Features ✨
   - Spam
   - Parrot
